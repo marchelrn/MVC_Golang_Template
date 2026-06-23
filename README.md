@@ -26,10 +26,20 @@ Template MVC dasar untuk Go, tanpa isi project lama.
 cp .env.example .env
 ```
 
-3. Jalankan aplikasi:
+3. a Jalankan aplikasi:
 
 ```bash
 go run main.go
+```
+
+3. b Jalankan aplikasi menggunakan Air (Hot Reload):
+
+```bash
+air init
+```
+Lalu jalankan :
+```bash
+air
 ```
 
 4. Test endpoint:
