@@ -6,7 +6,7 @@ type HealthService struct {
 	repo contract.HealthRepository
 }
 
-func NewHealthService(repo contract.HealthRepository) *HealthService {
+func ImplHealthService(repo contract.HealthRepository) contract.HealthService {
 	return &HealthService{repo: repo}
 }
 

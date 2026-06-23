@@ -2,22 +2,38 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/your-org/your-app/config"
-	"github.com/your-org/your-app/handler"
 	"github.com/your-org/your-app/repository"
 	"github.com/your-org/your-app/routes"
 	"github.com/your-org/your-app/service"
 )
 
 func Run(cfg config.Config) error {
-	repo := repository.NewHealthRepository()
-	svc := service.NewHealthService(repo)
-	h := handler.NewHealthHandler(svc)
+	log.SetFlags(log.Ldate | log.Ltime)
+	log.SetOutput(os.Stdout)
 
-	r := routes.NewRouter(h)
-	addr := fmt.Sprintf(":%s", cfg.Port)
+	cfg = config.Load()
 
-	return http.ListenAndServe(addr, r)
+	repo := repository.New()
+	svc, err := service.New(repo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	r := routes.NewRouter(svc)
+
+	serv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", cfg.Port),
+		Handler: r,
+	}
+
+	if err := serv.ListenAndServe(); err != nil {
+		return nil
+	}
+
+	return nil
 }

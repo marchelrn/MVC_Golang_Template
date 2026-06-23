@@ -9,6 +9,7 @@ import (
 
 func Run() {
 	cfg := config.Load()
+	log.Println("Server running in port :", cfg.Port)
 	if err := server.Run(cfg); err != nil {
 		log.Fatal(err)
 	}
